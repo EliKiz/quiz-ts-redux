@@ -8,7 +8,7 @@ const _BaseDifficulity = '&difficulty=easy'
 
 
 export type RequestCategories = { 
-    id: number,
+    id: string,
     name: string
 }
 
@@ -23,7 +23,6 @@ const QuizeService = () => {
         const res = await fetch(`${_AllCategories}`)
             .then((res) => res.json())
             .then((res) => res.trivia_categories)
-            console.log(res)
         return res
     }
 

@@ -1,3 +1,5 @@
+@import '../app/app.scss';
+
 .setup-form h1 {
     margin-bottom: 2rem;
   }
@@ -36,4 +38,7 @@ max-width: 500px;
 .submit-btn {
     width: 100%;
     margin-top: 3rem;
+    &:hover { 
+        background-color: var(--clr-primary-6) ;
+    }
   }
