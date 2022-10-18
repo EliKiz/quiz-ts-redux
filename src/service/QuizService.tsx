@@ -1,10 +1,10 @@
 
 
-const _AllCategories = 'https://opentdb.com/api_category.php'
-const _baseUrl = "https://opentdb.com/api.php?"
-const _BaseAmount = 'amount=10'
-const _BaseCategory = '&category=25'
-const _BaseDifficulity = '&difficulty=easy'
+export const _AllCategories = 'https://opentdb.com/api_category.php'
+export const _baseUrl = "https://opentdb.com/api.php?"
+export const _BaseAmount = '5'
+export const _BaseCategory = '9'
+export const _BaseDifficulity = 'easy'
 
 
 export type RequestCategories = { 
@@ -12,11 +12,29 @@ export type RequestCategories = {
     name: string
 }
 
+export type GetQuiz = { 
+    url: string
+    amount: string
+    category: string
+    difficulty: string
+}
+
+export type QuestionData = { 
+    category: string,
+    type: string,
+    difficulty: string,
+    question: string,
+    correct_answer: string,
+    incorrect_answers: string[]
+}
+
 const QuizeService = () => { 
 
-    const getQuiz = async () => { 
-        const res = await fetch(`${_baseUrl}${_BaseAmount}${_BaseCategory}${_BaseDifficulity}`)
-        return res.json()
+    const getQuiz = async (url = "https://opentdb.com/api.php?", amount = "5", category = "9", difficulty = "easy" ):Promise<QuestionData[]> => { 
+        const res = await fetch(`${url}amount=${amount}&category=${category}&difficulty=${difficulty}`)
+            .then((res) => res.json())
+            .then((res) => res.results)
+        return res 
     }
 
     const getAllcategoryList = async ():Promise<RequestCategories[]> => { 

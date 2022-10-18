@@ -3,13 +3,15 @@ import { useAppSelector, useAppDispatch } from '../app/hooks'
 
 import getAllCategories, { RequestCategories } from '../../service/QuizService'
 import Spinner from '../Spinner/Spinner'
-import * as Yup from 'yup'
-import { fetchcategoryList, selectCategoriesList, selectCategoriesListStatus } from './setupQuizeSlice'
+// import * as Yup from 'yup'
+import { fetchcategoryList, setDataSettings,selectCategoriesList, selectCategoriesListStatus, selectCategoriesListDataSettings } from './setupQuizeSlice'
 import { useEffect, useState } from 'react'
+
+import { selectSetupLoading, selectSetupShow, setLoading, setShow } from '../setupForm/setupFormSlice'
 
 import './setupQuiz.scss'
 
-type SettingData = { 
+export type SettingData = { 
     amountQuestion:number,
     category: string,
     difficulty: string
@@ -31,13 +33,11 @@ const SetupQuiz = () => {
     const allCategories = useAppSelector(selectCategoriesList)
     const statusLoading = useAppSelector(selectCategoriesListStatus)
 
-    if(allCategories.length === 0) { 
-        return <Spinner/>
-    }
+    const show = useAppSelector(selectSetupShow)
+    const loading = useAppSelector(selectSetupLoading)
 
-    const submitForm = (e:React.ChangeEvent<HTMLFormElement>) => { 
-        e.preventDefault()
-        console.log()
+    if(allCategories.length === 0 ) { 
+        return <Spinner/>
     }
 
     const dataSettings:SettingData = { 
@@ -45,25 +45,17 @@ const SetupQuiz = () => {
         category,
         difficulty
     }
-    
-    console.log(dataSettings)
 
-    let schema = Yup.object().shape({ 
-        number: Yup.string().required()
-    })
 
-    schema
-        .isValid(dataSettings)
-        .then((res) => console.log(res))
-        .catch((e) => console.error(e))
+    const submitForm = (e:React.ChangeEvent<HTMLFormElement>) => { 
+        e.preventDefault()
+        dispatch(setDataSettings(dataSettings))
+        // dispatch(setLoading(true))
+        dispatch(setShow())
+    }
 
-    // const handleClick  = (event:React.MouseEvent<HTMLElement>) => { 
-    //     console.log(event.currentTarget.id);
-    // }
 
-    // const handleChange = (event:React.ChangeEvent<HTMLElement>) => { 
-    //     console.log(event.currentTarget.id)
-    // }
+    const error = <p>Error</p>
 
     const optionsValueContent = (arr:RequestCategories[], status:string) => { 
         return arr.map(({id, name}) => { 
@@ -80,11 +72,8 @@ const SetupQuiz = () => {
 
     const handleAmountQuestion = (event:React.ChangeEvent<HTMLInputElement>) => { 
         let {value, min, max} = event.target;
-        
         let res = Math.max(Number(min), Math.min(Number(max), Number(value)));
-        
         setAmountQuestion(res)
-
     }   
 
     const content = optionsValueContent(allCategories, statusLoading )
@@ -92,7 +81,6 @@ const SetupQuiz = () => {
     return ( 
         <section className='quiz quiz-small'>
             <h1 className='title-quiz'>Setup quiz</h1>
-
             <form 
                 className='setup-form' 
                 action=""
@@ -143,10 +131,13 @@ const SetupQuiz = () => {
                 <button type='submit' className='submit-btn'>
                     start
                 </button>
+                {error}
             </form>
-
         </section>
     )
+
+        
+
 }
 
 export default SetupQuiz
