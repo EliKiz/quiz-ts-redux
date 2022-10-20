@@ -7,19 +7,19 @@ import Spinner from '../Spinner/Spinner'
 import { fetchcategoryList, setDataSettings,selectCategoriesList, selectCategoriesListStatus, selectCategoriesListDataSettings } from './setupQuizeSlice'
 import { useEffect, useState } from 'react'
 
-import { selectSetupLoading, selectSetupShow, setLoading, setShow } from '../setupForm/setupFormSlice'
+import { selectSetupLoading, selectSetupShow, selectSetupStatus, setLoading, setShow } from '../setupForm/setupFormSlice'
 
 import './setupQuiz.scss'
 
 export type SettingData = { 
-    amountQuestion:number,
+    amount:number,
     category: string,
     difficulty: string
 }
 
 const SetupQuiz = () => { 
 
-    const [amountQuestion, setAmountQuestion] = useState<number>(5)
+    const [amount, setAmount] = useState<number>(50)
     const [category, setCategory] = useState('9')
     const [difficulty, setDifficulty] = useState('easy')
 
@@ -32,16 +32,18 @@ const SetupQuiz = () => {
 
     const allCategories = useAppSelector(selectCategoriesList)
     const statusLoading = useAppSelector(selectCategoriesListStatus)
+    const status = useAppSelector(selectSetupStatus)
 
     const show = useAppSelector(selectSetupShow)
     const loading = useAppSelector(selectSetupLoading)
 
+    
     if(allCategories.length === 0 ) { 
         return <Spinner/>
     }
 
     const dataSettings:SettingData = { 
-        amountQuestion,
+        amount,
         category,
         difficulty
     }
@@ -50,12 +52,11 @@ const SetupQuiz = () => {
     const submitForm = (e:React.ChangeEvent<HTMLFormElement>) => { 
         e.preventDefault()
         dispatch(setDataSettings(dataSettings))
-        // dispatch(setLoading(true))
-        dispatch(setShow())
+        dispatch(setShow(true))
     }
+    // console.log(show)
 
-
-    const error = <p>Error</p>
+    const error = status === 'error' ? <p className='error'>Can't Generate Questions, Please Try Different Options</p> : null
 
     const optionsValueContent = (arr:RequestCategories[], status:string) => { 
         return arr.map(({id, name}) => { 
@@ -73,7 +74,7 @@ const SetupQuiz = () => {
     const handleAmountQuestion = (event:React.ChangeEvent<HTMLInputElement>) => { 
         let {value, min, max} = event.target;
         let res = Math.max(Number(min), Math.min(Number(max), Number(value)));
-        setAmountQuestion(res)
+        setAmount(res)
     }   
 
     const content = optionsValueContent(allCategories, statusLoading )
@@ -95,7 +96,7 @@ const SetupQuiz = () => {
                         min='1'
                         max='50'
                         className='form-input' 
-                        value={amountQuestion} />
+                        value={amount} />
                 </div>
                 <div className='form-control'>
                     <label htmlFor="amountQuestion">Category</label>
@@ -116,6 +117,7 @@ const SetupQuiz = () => {
                         id='difficulty'
                         name="difficulty" 
                         className='form-input' 
+                        defaultValue={'hard'}
                         onChange={(event) => {setDifficulty(event.target.value)}}>
                             <option value='easy'>
                                 easy
@@ -123,7 +125,7 @@ const SetupQuiz = () => {
                             <option value='medium'>
                                 medium
                             </option>
-                            <option value='hard'>
+                            <option value='hard' >
                                 hard
                             </option>
                     </select>

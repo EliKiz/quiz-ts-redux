@@ -15,7 +15,7 @@ const initialState:InitialState = {
     listCategory: [],
     status: 'idle',
     dataSettings: {
-        amountQuestion: 0,
+        amount: 0,
         category: '',
         difficulty: ''
     },

@@ -10,7 +10,7 @@ import { useAppSelector } from './hooks';
 
 function App() {
     const show = useAppSelector(selectSetupShow)
-
+    console.log(show)
     const content = show ? <SetupForm/> : <SetupQuiz/>
     
     return (
