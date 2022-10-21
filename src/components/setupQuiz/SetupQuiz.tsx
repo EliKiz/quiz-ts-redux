@@ -20,7 +20,7 @@ export type SettingData = {
 const SetupQuiz = () => { 
 
     const [amount, setAmount] = useState<number>(50)
-    const [category, setCategory] = useState('9')
+    const [category, setCategory] = useState('')
     const [difficulty, setDifficulty] = useState('easy')
 
     const dispatch = useAppDispatch()
@@ -30,6 +30,8 @@ const SetupQuiz = () => {
             // .then((res) => console.log(res.payload))
     }, [])
 
+    
+
     const allCategories = useAppSelector(selectCategoriesList)
     const statusLoading = useAppSelector(selectCategoriesListStatus)
     const status = useAppSelector(selectSetupStatus)
@@ -37,10 +39,16 @@ const SetupQuiz = () => {
     const show = useAppSelector(selectSetupShow)
     const loading = useAppSelector(selectSetupLoading)
 
-    
+    // useEffect(() => { 
+    //     if(status === 'error') { 
+    //         dispatch(setShow(false))
+    //     }
+    // }, [])
+
     if(allCategories.length === 0 ) { 
         return <Spinner/>
     }
+
 
     const dataSettings:SettingData = { 
         amount,
@@ -53,8 +61,8 @@ const SetupQuiz = () => {
         e.preventDefault()
         dispatch(setDataSettings(dataSettings))
         dispatch(setShow(true))
+        // dispatch(setShow(true))
     }
-    // console.log(show)
 
     const error = status === 'error' ? <p className='error'>Can't Generate Questions, Please Try Different Options</p> : null
 

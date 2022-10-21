@@ -9,6 +9,7 @@ type initialStateQuestion = {
     status: 'idle' | 'loading' | 'error',
     loading: boolean,
     show: boolean,
+    showEndedModal: boolean,
     index: number,
     correctAnswer: number
 }
@@ -18,10 +19,10 @@ const initialState:initialStateQuestion = {
     status: 'idle',
     loading: false,
     show: false,
+    showEndedModal: false,
     index: 0,
     correctAnswer: 0
 }
-
 // export const fetchQuestions = createAsyncThunk<
 //     GetQuiz, GetQuiz, {rejectValue: string}
 // >('question/fetchQuestion', async ({url, amount}) => { 
@@ -82,15 +83,21 @@ const setupFormSlice = createSlice({
         },
         setShow: (state, action) => { 
             state.show = action.payload
+            console.log(state.show)
         },
         nextQuestion: (state) => { 
             state.index = state.index + 1
             if( state.index > state.questions.length - 1) { 
+                state.showEndedModal = true
                 state.index = 0
+                
             }
         },
         checkAnswerBtn: (state) => { 
             state.correctAnswer = state.correctAnswer + 1
+        },
+        setModalEnded: (state, action) => { 
+            state.showEndedModal = action.payload
         }
 
     },
@@ -112,13 +119,14 @@ const setupFormSlice = createSlice({
     }
 })
 
-export const {setLoading, setShow, nextQuestion, checkAnswerBtn} = setupFormSlice.actions
+export const {setLoading, setShow, nextQuestion, checkAnswerBtn, setModalEnded} = setupFormSlice.actions
 
 export const selectSetupQuestions = (state:RootState ) => state.setupForm.questions
 export const selectSetupIndex = (state:RootState ) => state.setupForm.index
 export const selectSetupCorrectAnswer = (state:RootState ) => state.setupForm.correctAnswer
 export const selectSetupLoading = (state:RootState ) => state.setupForm.loading
 export const selectSetupShow = (state:RootState ) => state.setupForm.show
+export const selectSetupShowModalEndedModal = (state:RootState ) => state.setupForm.showEndedModal
 export const selectSetupStatus = (state:RootState ) => state.setupForm.status
 
 export default setupFormSlice.reducer

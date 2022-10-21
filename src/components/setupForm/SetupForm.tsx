@@ -4,12 +4,13 @@ import { useAppDispatch, useAppSelector } from '../app/hooks'
 import Spinner from '../Spinner/Spinner'
 import { fetchQuestions, 
     selectSetupLoading, selectSetupQuestions, selectSetupShow, nextQuestion, 
-    selectSetupIndex, selectSetupCorrectAnswer, checkAnswerBtn, selectSetupStatus, setShow } from './setupFormSlice'
+    selectSetupIndex, selectSetupCorrectAnswer, checkAnswerBtn, selectSetupStatus, setShow, selectSetupShowModalEndedModal } from './setupFormSlice'
 import { _AllCategories } from '../../service/QuizService'
 import { selectCategoriesListDataSettings } from '../setupQuiz/setupQuizeSlice'
 
-import './setupForm.scss'
 import SetupQuiz from '../setupQuiz/SetupQuiz'
+import ModalEnded from '../modalEnded/ModalEnded'
+import './setupForm.scss'
 
 
 const SetupForm = () => {   
@@ -22,6 +23,7 @@ const SetupForm = () => {
     const index = useAppSelector(selectSetupIndex)
     const correctAnswer = useAppSelector(selectSetupCorrectAnswer)
     const status = useAppSelector(selectSetupStatus)
+    const endedModal = useAppSelector(selectSetupShowModalEndedModal)
 
     const loading = useAppSelector(selectSetupLoading)
     const show = useAppSelector(selectSetupShow)
@@ -43,10 +45,8 @@ const SetupForm = () => {
     }
 
     const {question, correct_answer, incorrect_answers} = data[index]
-    const allAnswers = [correct_answer, ...incorrect_answers]
+    const allAnswers = [correct_answer, ...incorrect_answers].sort(() => (Math.random() > .5) ? 1 : -1);
 
-  
-    // console.log(show)
 
     const checkAnswer = (e:React.MouseEvent<HTMLButtonElement>) => { 
         // const { value} = (e.target as HTMLButtonElement)
@@ -61,11 +61,11 @@ const SetupForm = () => {
     }
     const nextClick = () => { 
         dispatch(nextQuestion())
-        console.log('click')
     }
+   
 
-    const renderButtonsAnswers = (AnswersArray:string[]) => { 
-        return AnswersArray.map((answer, index) => { 
+    const renderButtonsAnswers = (answers:string[]) => { 
+        return answers.map((answer, index) => { 
             return ( 
                 <button 
                     key={index} 
