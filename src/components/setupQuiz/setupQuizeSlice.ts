@@ -1,70 +1,71 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import QuizeService, { RequestCategories,  } from '../../service/QuizService'
+import QuizeService, { RequestCategories,  } from "../../service/QuizService";
 import { RootState } from "../../store";
-import {SettingData} from '../setupQuiz/SetupQuiz'
+import {SettingData} from "../setupQuiz/SetupQuiz";
 
 
 type InitialState = { 
     listCategory: RequestCategories[],
-    status: 'idle' | 'loading' | 'error',
+    status: "idle" | "loading" | "error",
     dataSettings: SettingData,
     error: string
 }
 
 const initialState:InitialState = { 
     listCategory: [],
-    status: 'idle',
+    status: "idle",
     dataSettings: {
         amount: 0,
-        category: '',
-        difficulty: ''
+        category: "",
+        difficulty: ""
     },
-    error: ''
-}
+    error: ""
+};
 
 export const fetchcategoryList = createAsyncThunk(
-    'categoryList/fetchcategoryList',
+    "categoryList/fetchcategoryList",
     async () => { 
-        const {getAllcategoryList} = QuizeService()
-        return await getAllcategoryList()
+        const {getAllcategoryList} = QuizeService();
+        return await getAllcategoryList();
     }
-)
+);
 
 
 const setupQuizSlice = createSlice({ 
-    name: 'categoryList',
+    name: "categoryList",
     initialState,
     reducers: {
         setDataSettings: (state, action) =>  {
-            state.dataSettings = action.payload
+            state.dataSettings = action.payload;
         }
     },
     extraReducers: (builder) => { 
         builder
             .addCase(fetchcategoryList.pending, (state) => { 
-                state.status = 'loading'
+                state.status = "loading";
             })
             .addCase(fetchcategoryList.fulfilled, (state, action) => { 
-                state.listCategory = action.payload
-                state.status = 'idle'
+                state.listCategory = action.payload;
+                state.status = "idle";
                 
             })
             .addCase(fetchcategoryList.rejected, (state) => { 
-                state.status = 'error'
+                state.status = "error";
             })
-            .addDefaultCase(() => {} )
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            .addDefaultCase(() => {});
     }
-})
+});
 
 // const {actions, reducer} = setupQuizSlice
 
 export const { 
     setDataSettings
-} = setupQuizSlice.actions
+} = setupQuizSlice.actions;
 
-export const selectCategoriesList = (state:RootState ) => state.categoryList.listCategory
-export const selectCategoriesListStatus = (state:RootState ) => state.categoryList.status
-export const selectCategoriesListDataSettings = (state:RootState ) => state.categoryList.dataSettings
+export const selectCategoriesList = (state:RootState ) => state.categoryList.listCategory;
+export const selectCategoriesListStatus = (state:RootState ) => state.categoryList.status;
+export const selectCategoriesListDataSettings = (state:RootState ) => state.categoryList.dataSettings;
 
 
-export default setupQuizSlice.reducer
+export default setupQuizSlice.reducer;

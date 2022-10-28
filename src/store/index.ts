@@ -1,12 +1,12 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import setupeQuizReducer from '../components/setupQuiz/setupQuizeSlice'
-import setupFormReducer from '../components/setupForm/setupFormSlice';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import setupeQuizReducer from "../components/setupQuiz/setupQuizeSlice";
+import setupFormReducer from "../components/setupForm/setupFormSlice";
 
 export const store = configureStore({
-  reducer: {
-    categoryList: setupeQuizReducer,
-    setupForm: setupFormReducer
-  },
+    reducer: {
+        categoryList: setupeQuizReducer,
+        setupForm: setupFormReducer
+    },
 });
 
 export type AppDispatch = typeof store.dispatch;
