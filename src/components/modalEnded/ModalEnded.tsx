@@ -5,7 +5,7 @@ import {
     selectSetupShowModalEndedModal,
     setModalEnded,
     setShow,
-} from "../setupForm/setupFormSlice";
+} from "../answerQuiz/AnswerQuizSlice";
 import "./modalEnded.scss";
 
 const ModalEnded = () => {

@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import setupeQuizReducer from "../components/setupQuiz/setupQuizeSlice";
-import setupFormReducer from "../components/setupForm/setupFormSlice";
+import setupFormReducer from "../components/answerQuiz/AnswerQuizSlice";
 
 export const store = configureStore({
     reducer: {

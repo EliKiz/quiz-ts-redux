@@ -1,6 +1,6 @@
 import ModalEnded from "../modalEnded/ModalEnded";
-import SetupForm from "../setupForm/SetupForm";
-import { selectSetupShow } from "../setupForm/setupFormSlice";
+import SetupForm from "../answerQuiz/AnswerQuiz";
+import { selectSetupShow } from "../answerQuiz/AnswerQuizSlice";
 import SetupQuiz from "../setupQuiz/SetupQuiz";
 
 import { useAppSelector } from "./hooks";

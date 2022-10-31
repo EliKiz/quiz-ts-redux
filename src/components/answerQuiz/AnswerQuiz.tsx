@@ -11,10 +11,10 @@ import {
     selectSetupStatus,
     setShow,
     resetEror,
-} from "./setupFormSlice";
+} from "./AnswerQuizSlice";
 import { selectCategoriesListDataSettings } from "../setupQuiz/setupQuizeSlice";
 
-import "./setupForm.scss";
+import "./AnswerQuiz.scss";
 
 const SetupForm = () => {
     const dispatch = useAppDispatch();
@@ -66,8 +66,7 @@ const SetupForm = () => {
                     value={answer}
                     className="answer-btn"
                     onClick={(e) => checkAnswer(e)}
-                    dangerouslySetInnerHTML={{ __html: answer }}
-                ></button>
+                    dangerouslySetInnerHTML={{ __html: answer }}></button>
             );
         });
     };

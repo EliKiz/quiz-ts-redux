@@ -10,7 +10,7 @@ import {
 } from "./setupQuizeSlice";
 import { useEffect, useState } from "react";
 
-import { selectSetupStatus, setShow } from "../setupForm/setupFormSlice";
+import { selectSetupStatus, setShow } from "../answerQuiz/AnswerQuizSlice";
 
 import "./setupQuiz.scss";
 
